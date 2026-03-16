@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>中国象棋</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 黑方信息 -->
+        <div class="player-info black-player">
+            <div class="player-avatar">黑</div>
+            <div class="player-details">
+                <span class="player-name">黑方</span>
+                <span class="player-status" id="black-status">等待中</span>
+            </div>
+        </div>
+
+        <!-- 棋盘区域 -->
+        <div class="board-container">
+            <canvas id="chessBoard"></canvas>
+        </div>
+
+        <!-- 红方信息 -->
+        <div class="player-info red-player">
+            <div class="player-avatar">红</div>
+            <div class="player-details">
+                <span class="player-name">红方</span>
+                <span class="player-status" id="red-status">走棋中</span>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="control-buttons">
+            <button id="undoBtn" class="btn btn-secondary">悔棋</button>
+            <button id="hintBtn" class="btn btn-primary">提示</button>
+            <button id="restartBtn" class="btn btn-danger">重开</button>
+        </div>
+
+        <!-- 聊天区域 -->
+        <div class="chat-section">
+            <div class="chat-header" id="chatToggle">
+                <span>聊天</span>
+                <span class="chat-toggle-icon">▼</span>
+            </div>
+            <div class="chat-content" id="chatContent">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="emoji-bar">
+                    <button class="emoji-btn" data-emoji="👍">👍</button>
+                    <button class="emoji-btn" data-emoji="👎">👎</button>
+                    <button class="emoji-btn" data-emoji="😄">😄</button>
+                    <button class="emoji-btn" data-emoji="😢">😢</button>
+                    <button class="emoji-btn" data-emoji="🤔">🤔</button>
+                    <button class="emoji-btn" data-emoji="😱">😱</button>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="输入消息..." maxlength="50">
+                    <button id="sendBtn" class="btn btn-small">发送</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 观战模式 -->
+        <div class="spectator-section" id="spectatorSection">
+            <div class="spectator-header">
+                <span>观战者 (<span id="spectatorCount">0</span>)</span>
+            </div>
+            <div class="spectator-list" id="spectatorList"></div>
+        </div>
+
+        <!-- 游戏结束弹窗 -->
+        <div class="modal" id="gameOverModal">
+            <div class="modal-content">
+                <h2 id="gameOverTitle">游戏结束</h2>
+                <p id="gameOverMessage"></p>
+                <button id="playAgainBtn" class="btn btn-primary">再来一局</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="pieces.js"></script>
+    <script src="game.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>
