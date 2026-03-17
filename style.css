@@ -157,7 +157,9 @@ body {
 .chat-section {
     background: #f5f5f5;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
 }
 
 .chat-header {
@@ -182,8 +184,8 @@ body {
 }
 
 .chat-content {
-    max-height: 200px;
-    overflow: hidden;
+    max-height: 300px;
+    overflow: visible;
     transition: max-height 0.3s ease;
 }
 
@@ -256,6 +258,10 @@ body {
     gap: 4px;
     padding: 8px;
     border-top: 1px solid #ddd;
+    min-height: 44px;
+    background: white;
+    position: relative;
+    z-index: 1;
 }
 
 #chatInput {
