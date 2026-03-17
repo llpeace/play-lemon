@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>中国象棋 - 在线对战</title>
+    <style>
+        /* 内联 CSS 避免加载问题 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; overflow: hidden; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        #loading {
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+        #app { display: none; }
+        #app.loaded { display: block; width: 100%; max-width: 400px; }
+    </style>
+</head>
+<body>
+    <div id="loading">正在加载游戏...</div>
+    <div id="app"></div>
+
+    <script>
+        // 从 GitHub Raw 加载资源
+        const baseURL = 'https://raw.githubusercontent.com/llpeace/play-lemon/main/';
+
+        // 加载 CSS
+        const loadCSS = (url) => {
+            return new Promise((resolve, reject) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = url;
+                link.onload = resolve;
+                link.onerror = reject;
+                document.head.appendChild(link);
+            });
+        };
+
+        // 加载 JS
+        const loadJS = (url) => {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.body.appendChild(script);
+            });
+        };
+
+        // 加载 HTML 内容
+        const loadHTML = async () => {
+            const response = await fetch(baseURL + 'index.html');
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const gameContainer = doc.querySelector('.game-container');
+            if (gameContainer) {
+                document.getElementById('app').innerHTML = gameContainer.outerHTML;
+            }
+        };
+
+        // 初始化
+        (async () => {
+            try {
+                // 1. 加载 CSS
+                await loadCSS(baseURL + 'style.css');
+
+                // 2. 加载 HTML 结构
+                await loadHTML();
+
+                // 3. 加载 PeerJS
+                await loadJS('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js');
+
+                // 4. 加载游戏脚本
+                await loadJS(baseURL + 'pieces.js');
+                await loadJS(baseURL + 'game.js');
+                await loadJS(baseURL + 'chat.js');
+                await loadJS(baseURL + 'online.js');
+
+                // 5. 显示游戏
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').classList.add('loaded');
+
+                console.log('游戏加载完成！');
+            } catch (error) {
+                console.error('加载失败:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div>加载失败，请刷新重试</div>
+                    <div style="font-size: 12px; margin-top: 10px;">错误: ${error.message}</div>
+                `;
+            }
+        })();
+    </script>
+</body>
+</html>
