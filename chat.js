@@ -214,7 +214,16 @@ class ChessChat {
 
 // 初始化聊天
 let chat;
-document.addEventListener('DOMContentLoaded', () => {
-    chat = new ChessChat();
-    window.chat = chat;
-});
+
+function initChat() {
+    if (!chat) {
+        chat = new ChessChat();
+        window.chat = chat;
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChat);
+} else {
+    initChat();
+}

@@ -791,7 +791,16 @@ class ChineseChessGame {
 
 // 初始化游戏
 let game;
-document.addEventListener('DOMContentLoaded', () => {
-    game = new ChineseChessGame('chessBoard');
-    window.game = game;  // 暴露给全局，供chat.js使用
-});
+
+function initGame() {
+    if (!game && document.getElementById('chessBoard')) {
+        game = new ChineseChessGame('chessBoard');
+        window.game = game;  // 暴露给全局，供chat.js使用
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGame);
+} else {
+    initGame();
+}
