@@ -128,6 +128,13 @@ class ChineseChessGame {
      * 处理点击
      */
     handleClick(clickX, clickY) {
+        // 在线模式下检查是否轮到自己
+        if (window.onlineGame && window.onlineGame.connected) {
+            if (!window.onlineGame.isMyTurn()) {
+                return; // 不是我的回合，不能操作
+            }
+        }
+
         // 转换为棋盘坐标
         const gridX = Math.round((clickX - this.padding) / this.gridSize);
         const gridY = Math.round((clickY - this.padding) / this.gridSize);
@@ -138,6 +145,13 @@ class ChineseChessGame {
         }
 
         const clickedPiece = this.board[gridY][gridX];
+
+        // 在线模式下检查是否是自己的棋子
+        if (window.onlineGame && window.onlineGame.connected) {
+            if (clickedPiece && !window.onlineGame.isMyPiece(clickedPiece)) {
+                return; // 不是我的棋子，不能选择
+            }
+        }
 
         // 如果已选中棋子
         if (this.selectedPiece) {
@@ -235,6 +249,11 @@ class ChineseChessGame {
         piece.x = toX;
         piece.y = toY;
 
+        // 在线模式：发送移动到对手
+        if (window.onlineGame && window.onlineGame.connected) {
+            window.onlineGame.sendMove(fromX, fromY, toX, toY);
+        }
+
         // 清除选择
         this.deselectPiece();
 
@@ -247,8 +266,10 @@ class ChineseChessGame {
         // 更新状态显示
         this.updateStatus();
 
-        // 保存游戏
-        this.saveGame();
+        // 保存游戏（在线模式不保存到本地）
+        if (!window.onlineGame || !window.onlineGame.connected) {
+            this.saveGame();
+        }
 
         // 通知观战者
         this.notifySpectators();

@@ -60,30 +60,54 @@ class ChessChat {
     sendMessage(text) {
         if (!text || text.trim() === '') return;
 
-        const currentPlayer = window.game ? window.game.currentPlayer : 'red';
+        // 在线模式：使用我的颜色，否则使用当前玩家
+        let sender = 'red';
+        if (window.onlineGame && window.onlineGame.connected) {
+            sender = window.onlineGame.myColor;
+        } else {
+            sender = window.game ? window.game.currentPlayer : 'red';
+        }
+
         const message = {
             type: 'text',
-            sender: currentPlayer,
+            sender: sender,
             content: text.trim(),
             timestamp: Date.now()
         };
 
         this.addMessage(message);
+
+        // 在线模式：发送到对手
+        if (window.onlineGame && window.onlineGame.connected) {
+            window.onlineGame.sendChat(message);
+        }
     }
 
     /**
      * 发送表情
      */
     sendEmoji(emoji) {
-        const currentPlayer = window.game ? window.game.currentPlayer : 'red';
+        // 在线模式：使用我的颜色，否则使用当前玩家
+        let sender = 'red';
+        if (window.onlineGame && window.onlineGame.connected) {
+            sender = window.onlineGame.myColor;
+        } else {
+            sender = window.game ? window.game.currentPlayer : 'red';
+        }
+
         const message = {
             type: 'emoji',
-            sender: currentPlayer,
+            sender: sender,
             content: emoji,
             timestamp: Date.now()
         };
 
         this.addMessage(message);
+
+        // 在线模式：发送到对手
+        if (window.onlineGame && window.onlineGame.connected) {
+            window.onlineGame.sendChat(message);
+        }
     }
 
     /**

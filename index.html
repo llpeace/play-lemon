@@ -36,6 +36,12 @@
             <button id="undoBtn" class="btn btn-secondary">悔棋</button>
             <button id="hintBtn" class="btn btn-primary">提示</button>
             <button id="restartBtn" class="btn btn-danger">重开</button>
+            <button id="onlineBtn" class="btn btn-primary" onclick="showOnlineModal()">在线对战</button>
+        </div>
+
+        <!-- 在线状态显示 -->
+        <div class="online-status-bar" id="onlineStatusBar" style="display: none;">
+            <span id="onlineStatus">离线</span>
         </div>
 
         <!-- 聊天区域 -->
@@ -77,10 +83,23 @@
                 <button id="playAgainBtn" class="btn btn-primary">再来一局</button>
             </div>
         </div>
+
+        <!-- 在线对战弹窗 -->
+        <div class="modal" id="onlineModal">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- 动态内容 -->
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- PeerJS 库 -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
     <script src="pieces.js"></script>
     <script src="game.js"></script>
     <script src="chat.js"></script>
+    <script src="online.js"></script>
 </body>
 </html>
